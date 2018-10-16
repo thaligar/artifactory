@@ -375,6 +375,29 @@ local_repos = repo.repositories # return List<RepositiryLocal>
 repo.delete()
 ```
 
+## Token
+```python
+# Find
+from dohq_artifactory import Token
+token = Token(artifactory_, token_id='tokenid')
+
+# Create
+if token is None:
+    token = Token(artifactory_, scope='member-of-groups:groupname', expires_in=3600)
+    token.create()
+
+# You can re-read from Artifactory
+token.read()
+
+# Get tokens with the same scope
+token.tokens
+
+# Get the jwt token
+token.jwt_token
+
+token.delete()
+```
+
 ## PermissionTarget
 Docs: https://www.jfrog.com/confluence/display/RTF/Managing+Permissions
 
