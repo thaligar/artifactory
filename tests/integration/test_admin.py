@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from dohq_artifactory.admin import User, Group, RepositoryLocal, PermissionTarget
+from dohq_artifactory.admin import User, Group, RepositoryLocal, PermissionTarget, Token
 
 
 class TestUser:
@@ -142,4 +142,34 @@ class TestTargetPermission:
         permission.add_group(group1, PermissionTarget.READ)
         permission.update()
         assert 'group1' in permission.raw['principals']['groups']
+
+
+class TestToken:
+    def test_create_delete(self, artifactory):
+        name = 'create_delete_token'
+        scope = 'member-of-groups: readers'
+
+        test_token = Token(artifactory=artifactory, scope=scope, expires_in=3600)
+
+        # CREATE
+        test_token.create()
+        token_id = test_token.token_id
+        assert test_token.jwt_token is not None
+
+        # DELETE (aka revoke)
+        test_token.delete()
+        assert Token(artifactory, token_id=token_id) is None
+
+    def test_refresh_token(self, artifactory):
+        name = 'refreh_token'
+        scope = 'member-of-groups: readers'
+
+        token = Token(artifactory=artifactory, scope=scope, expires_in=3600)
+        token.create()
+        token.read()
+        old_jwt_token = token.jwt_token
+
+        token.create()
+        token.read()
+        assert token.jwt_token != token
 
