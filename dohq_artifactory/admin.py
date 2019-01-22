@@ -301,8 +301,7 @@ V2 = "V2"
 class RepositoryLocal(Repository):
     _uri = 'repositories'
 
-    def __init__(self, artifactory, name, packageType=Repository.GENERIC,
-                 dockerApiVersion=Repository.V1):
+    def __init__(self, artifactory, name, packageType=Repository.GENERIC, dockerApiVersion=Repository.V1):
         super(RepositoryLocal, self).__init__(artifactory)
         self.name = name
         self.description = ''
