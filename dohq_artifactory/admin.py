@@ -296,9 +296,8 @@ class Repository(AdminObject):
     PUPPET = "puppet"
     GENERIC = "generic"
 
-
-V1 = "V1"
-V2 = "V2"
+    V1 = "V1"
+    V2 = "V2"
 
 
 class RepositoryLocal(Repository):
