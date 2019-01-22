@@ -294,14 +294,20 @@ class Repository(AdminObject):
     GENERIC = "generic"
 
 
+V1 = "V1"
+V2 = "V2"
+
+
 class RepositoryLocal(Repository):
     _uri = 'repositories'
 
-    def __init__(self, artifactory, name, packageType=Repository.GENERIC):
+    def __init__(self, artifactory, name, packageType=Repository.GENERIC,
+                 dockerApiVersion=Repository.V1):
         super(RepositoryLocal, self).__init__(artifactory)
         self.name = name
         self.description = ''
         self.packageType = packageType
+        self.dockerApiVersion = dockerApiVersion
         self.repoLayoutRef = 'maven-2-default'
         self.archiveBrowsingEnabled = True
 
@@ -318,7 +324,7 @@ class RepositoryLocal(Repository):
             "includesPattern": "**/*",
             "excludesPattern": "",
             "repoLayoutRef": self.repoLayoutRef,
-            "dockerApiVersion": "V1",
+            "dockerApiVersion": self.dockerApiVersion,
             "checksumPolicyType": "client-checksums",
             "handleReleases": True,
             "handleSnapshots": True,
